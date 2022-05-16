@@ -1,3 +1,4 @@
+#howdy
 # Build Instructions:
 
 ## General Remarks
@@ -90,7 +91,7 @@ To clean the project (one of):
   generate build files: 
   >cmake -S . -B cmake-build
 
-  Then open the `cmake-build` directory and open the `start_scene.sln` file (with Visual Studio) and everything should just work.
+  Then open the `cmake-build` directory   and open the `start_scene.sln` file (with Visual Studio) and everything should just work.
 
 
 ### Command line / Other IDE fall back:

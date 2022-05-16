@@ -403,7 +403,7 @@ void display(void) {
 
     // Set the view matrix. To start with this just moves the camera
     // backwards.  You'll need to add appropriate rotations.
-
+    //Task A - Camera Rotate
     mat4 rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
     view = Translate(0.0, 0.0, -viewDist) * rotate;
 

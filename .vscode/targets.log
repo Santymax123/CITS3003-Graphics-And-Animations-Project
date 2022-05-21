@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 16 12:37:23 2022
+# Make data base, printed on Thu May 19 16:05:12 2022
 
 # Variables
 
@@ -49,7 +49,7 @@ VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupp
 # environment
 _ = /usr/share/code/code
 # environment
-JOURNAL_STREAM = 8:56588
+JOURNAL_STREAM = 8:222907
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # makefile
@@ -69,7 +69,7 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 2326
+MANAGERPID = 17531
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -81,7 +81,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/Max:@/tmp/.ICE-unix/2542,unix/Max:/tmp/.ICE-unix/2542
+SESSION_MANAGER = local/Max:@/tmp/.ICE-unix/17748,unix/Max:/tmp/.ICE-unix/17748
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -91,7 +91,7 @@ VSCODE_LOG_STACK = false
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 7109c731b7504f5d92a1ac0ff292106a
+INVOCATION_ID = 4e23fc22e17f4862832a97aea5716c6c
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -101,7 +101,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 21421
+GIO_LAUNCHED_DESKTOP_FILE_PID = 19481
 # automatic
 %F = $(notdir $%)
 # environment
@@ -113,7 +113,7 @@ PWD = /home/max/Documents/GitHub/CITS3003-Graphics-And-Animations-Project
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2507
+SSH_AGENT_PID = 17713
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -149,7 +149,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1a4d3df5-06d8-4d93-85e3-2df5418bfdde.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ff81e29d-599e-4649-90e1-427416df9149.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -211,7 +211,7 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 21421
+VSCODE_PID = 19481
 # variable set hash-table stats:
 # Load=100/1024=10%, Rehash=0, Collisions=13/122=11%
 
@@ -239,6 +239,7 @@ all:
 #  File has not been updated.
 
 # Not a target:
+ 
 Makefile:
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -279,6 +280,6 @@ GNUmakefile:
 # strcache performance: lookups = 16 / hit rate = 18%
 # hash-table stats:
 # Load=13/8192=0%, Rehash=0, Collisions=1/16=6%
-# Finished Make data base on Mon May 16 12:37:23 2022
+# Finished Make data base on Thu May 19 16:05:12 2022
 
  

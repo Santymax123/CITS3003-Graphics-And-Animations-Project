@@ -27,6 +27,15 @@ void main()
     vec3 E = normalize( -pos );   // Direction to the eye/camera
     vec3 H = normalize( L + E );  // Halfway vector
 
+    //task F
+    //calculate distance from light to object
+    //use attenuation formula
+    float dist = length(Lvec);
+    float att = 1.0 / (1.0 + 0.01 * dist + 0.01 * dist * dist);
+    
+    //color.rgb = globalAmbient + (ambient + diffuse + specular) * att;
+
+
     // Transform vertex normal into eye coordinates (assumes scaling
     // is uniform across dimensions)
     vec3 N = normalize( (ModelView*vec4(vNormal, 0.0)).xyz );
@@ -46,9 +55,12 @@ void main()
 
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-    color.rgb = globalAmbient  + ambient + diffuse + specular;
+    //task F
+    //color.rgb = globalAmbient  + ambient + diffuse + specular; //previous code
+    color.rgb = globalAmbient + (ambient + diffuse + specular) * att;
     color.a = 1.0;
 
     gl_Position = Projection * ModelView * vpos;
     texCoord = vTexCoord;
+
 }

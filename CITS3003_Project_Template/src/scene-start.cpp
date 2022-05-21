@@ -366,13 +366,17 @@ void drawMesh(SceneObject sceneObj) {
     // Set the texture scale for the shaders
     glUniform1f(glGetUniformLocation(shaderProgram, "texScale"), sceneObj.texScale);
 
+
     // Set the projection matrix for the shaders
     glUniformMatrix4fv(projectionU, 1, GL_TRUE, projection);
 
     // Set the model matrix - this should combine translation, rotation and scaling based on what's
     // in the sceneObj structure (see near the top of the program).
 
-    mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale);
+    //task B
+    //make a rotation matrix to scale the model by
+    mat4 rotation = RotateX(sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(sceneObj.angles[2]);
+    mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotation;
 
 
     // Set the model-view matrix for the shaders
@@ -403,9 +407,11 @@ void display(void) {
 
     // Set the view matrix. To start with this just moves the camera
     // backwards.  You'll need to add appropriate rotations.
+
     //Task A - Camera Rotate
-    mat4 rotate = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
-    view = Translate(0.0, 0.0, -viewDist) * rotate;
+    
+    mat4 rotation = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
+    view = Translate(0.0, 0.0, -viewDist) * rotation;
 
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc;
@@ -457,6 +463,17 @@ static void groundMenu(int id) {
 static void adjustBrightnessY(vec2 by) {
     sceneObjs[toolObj].brightness += by[0];
     sceneObjs[toolObj].loc[1] += by[1];
+}
+
+//Task C
+static void adjustAmbientDiffuse(vec2 ad) {
+    sceneObjs[toolObj].ambient += ad[0];
+    sceneObjs[toolObj].diffuse += ad[1];
+}
+
+static void adjustSpecularShine(vec2 ss) {
+    sceneObjs[toolObj].specular += ss[0];
+    sceneObjs[toolObj].shine += ss[1];
 }
 
 static void adjustRedGreen(vec2 rg) {
@@ -515,7 +532,11 @@ static void materialMenu(int id) {
         setToolCallbacks(adjustRedGreen, mat2(1, 0, 0, 1),
                          adjustBlueBrightness, mat2(1, 0, 0, 1));
     }
-        // You'll need to fill in the remaining menu items here.
+    //Task C - creating tool for adjusting A/D/S/S
+    else if (id == 20) {
+        toolObj = currObject;
+        setToolCallbacks(adjustAmbientDiffuse, mat2(1.0, 0.0, 0.0, 1.0), adjustSpecularShine, mat2(1.0, 0.0, 0.0, 1.0));
+    }
     else {
         printf("Error in materialMenu\n");
     }
@@ -552,7 +573,8 @@ static void makeMenu() {
 
     int materialMenuId = glutCreateMenu(materialMenu);
     glutAddMenuEntry("R/G/B/All", 10);
-    glutAddMenuEntry("UNIMPLEMENTED: Ambient/Diffuse/Specular/Shine", 20);
+    //task c - took out unimplemented
+    glutAddMenuEntry("Ambient/Diffuse/Specular/Shine", 20);
 
     int texMenuId = createArrayMenu(numTextures, textureMenuEntries, texMenu);
     int groundMenuId = createArrayMenu(numTextures, textureMenuEntries, groundMenu);
@@ -636,8 +658,8 @@ void reshape(int width, int height) {
     //     - when the width is less than the height, the view should adjust so
     //         that the same part of the scene is visible across the width of
     //         the window.
-
-    GLfloat nearDist = 0.2;
+//task D
+    GLfloat nearDist = 0.02;
     projection = Frustum(-nearDist * (float) width / (float) height,
                          nearDist * (float) width / (float) height,
                          -nearDist, nearDist,

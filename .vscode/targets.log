@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu May 19 16:05:12 2022
+# Make data base, printed on Mon May 23 11:22:30 2022
 
 # Variables
 
@@ -24,6 +24,8 @@ DESKTOP_SESSION = ubuntu
 .SHELLFLAGS := -c
 # environment
 XDG_SESSION_CLASS = user
+# environment
+SNAP_COMMON = /var/snap/code/common
 # environment
 XDG_SESSION_TYPE = x11
 # environment
@@ -41,27 +43,29 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/max/Documents/GitHub/CITS3003-Graphics-And-Animations-Project
+CURDIR := /home/jamlons/Documents/CITS3003-Graphics-And-Animations-Project
 # makefile
 SHELL = /bin/sh
 # environment
+SNAP_DATA = /var/snap/code/97
+# environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-_ = /usr/share/code/code
-# environment
-JOURNAL_STREAM = 8:222907
+JOURNAL_STREAM = 8:48614
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+# environment
+SNAP_INSTANCE_NAME = code
+# environment
+SNAP_ARCH = amd64
 # makefile
 MAKEFILE_LIST := 
 # automatic
 @F = $(notdir $@)
 # environment
-GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
+GIO_LAUNCHED_DESKTOP_FILE = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-USERNAME = max
-# environment
-MANDATORY_PATH = /usr/share/gconf/ubuntu.mandatory.path
+USERNAME = jamlons
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
@@ -69,11 +73,15 @@ DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 17531
+_ = /snap/code/97/usr/share/code/code
+# environment
+MANAGERPID = 1150
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
-VSCODE_CWD = /home/max
+VSCODE_CWD = /home/jamlons
+# environment
+GSETTINGS_SCHEMA_DIR = /snap/code/97/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -81,17 +89,27 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/Max:@/tmp/.ICE-unix/17748,unix/Max:/tmp/.ICE-unix/17748
+SESSION_MANAGER = local/jamlons-AX370-Gaming-K7:@/tmp/.ICE-unix/1423,unix/jamlons-AX370-Gaming-K7:/tmp/.ICE-unix/1423
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
+# environment
+GDK_PIXBUF_MODULE_FILE = /home/jamlons/snap/code/common/.cache/gdk-pixbuf-loaders.cache
+# environment
+SNAP = /snap/code/97
+# environment
+SNAP_VERSION = c3511e6c
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
 VSCODE_LOG_STACK = false
 # environment
+DISABLE_WAYLAND = 1
+# environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 4e23fc22e17f4862832a97aea5716c6c
+INVOCATION_ID = 599c1a7825ba4a2dbae0bd858e44d72b
+# environment
+GDK_PIXBUF_MODULEDIR = /snap/code/97/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -101,19 +119,21 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 19481
+GIO_LAUNCHED_DESKTOP_FILE_PID = 9289
 # automatic
 %F = $(notdir $%)
 # environment
-DISPLAY = :1
+DISPLAY = :0
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/max/Documents/GitHub/CITS3003-Graphics-And-Animations-Project
+SNAP_INSTANCE_KEY = 
+# environment
+PWD = /home/jamlons/Documents/CITS3003-Graphics-And-Animations-Project
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 17713
+SSH_AGENT_PID = 1386
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -121,15 +141,25 @@ GTK_MODULES = gail:atk-bridge
 # environment
 VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
 # environment
-HOME = /home/max
+HOME = /home/jamlons
 # environment
 LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
-VSCODE_CODE_CACHE_PATH = /home/max/.config/Code/CachedData/da15b6fd3ef856477bf6f4fb29ba1b7af717770d
+VSCODE_CLI = 1
 # environment
-LOGNAME = max
+VSCODE_CODE_CACHE_PATH = /home/jamlons/.config/Code/CachedData/c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
+# environment
+LOGNAME = jamlons
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
+# environment
+SNAP_CONTEXT = o6KLpbv9GTyc2O6HqExLtPMgYJjgIcVjaeO5aSgTb2QI3Bx-HXAN
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+SNAP_USER_COMMON = /home/jamlons/snap/code/common
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # environment
@@ -138,6 +168,8 @@ GNOME_DESKTOP_SESSION_ID = this-is-deprecated
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
 MAKELEVEL := 0
+# environment
+SNAP_REAL_HOME = /home/jamlons
 # default
 MAKE = $(MAKE_COMMAND)
 # default
@@ -145,15 +177,19 @@ MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
 # environment
+SNAP_USER_DATA = /home/jamlons/snap/code/97
+# environment
 SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ff81e29d-599e-4649-90e1-427416df9149.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-c68d8675-b595-4ea3-b00d-7048f8e0fd97.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
-USER = max
+USER = jamlons
+# environment
+SNAP_REVISION = 97
 # makefile
 .DEFAULT_GOAL := 
 # environment
@@ -169,7 +205,9 @@ MAKE_COMMAND := make
 # environment
 LANGUAGE = en_AU:en
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-2718e749-1.67.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-1b5ef1c9-1.67.2-main.sock
+# environment
+BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # makefile
 MAKEFLAGS = pqrR
 # environment
@@ -184,12 +222,14 @@ GDK_BACKEND = x11
 +F = $(notdir $+)
 # environment
 QT_ACCESSIBILITY = 1
-# environment
-DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # default
 MAKEFILES := 
+# environment
+SNAP_COOKIE = o6KLpbv9GTyc2O6HqExLtPMgYJjgIcVjaeO5aSgTb2QI3Bx-HXAN
 # automatic
 <F = $(notdir $<)
+# environment
+SNAP_NAME = code
 # environment
 LC_ALL = C
 # environment
@@ -198,6 +238,8 @@ GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 ^F = $(notdir $^)
 # default
 SUFFIXES := 
+# environment
+SNAP_REEXEC = 
 # environment
 CHROME_DESKTOP = code-url-handler.desktop
 # environment
@@ -211,9 +253,9 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = C
 # environment
-VSCODE_PID = 19481
+VSCODE_PID = 9343
 # variable set hash-table stats:
-# Load=100/1024=10%, Rehash=0, Collisions=13/122=11%
+# Load=121/1024=12%, Rehash=0, Collisions=18/143=13%
 
 # Pattern-specific Variable Values
 
@@ -221,7 +263,7 @@ VSCODE_PID = 19481
 
 # Directories
 
-# . (device 2054, inode 267394): 5 files, no impossibilities.
+# . (device 2066, inode 2239669): 5 files, no impossibilities.
 
 # 5 files, no impossibilities in 1 directories.
 
@@ -239,7 +281,6 @@ all:
 #  File has not been updated.
 
 # Not a target:
- 
 Makefile:
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -247,6 +288,7 @@ Makefile:
 #  Failed to be updated.
 
 # Not a target:
+ 
 makefile:
 #  Implicit rule search has been done.
 #  File does not exist.
@@ -280,6 +322,6 @@ GNUmakefile:
 # strcache performance: lookups = 16 / hit rate = 18%
 # hash-table stats:
 # Load=13/8192=0%, Rehash=0, Collisions=1/16=6%
-# Finished Make data base on Thu May 19 16:05:12 2022
+# Finished Make data base on Mon May 23 11:22:30 2022
 
  

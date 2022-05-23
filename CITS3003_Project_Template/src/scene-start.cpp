@@ -375,7 +375,7 @@ void drawMesh(SceneObject sceneObj) {
 
     //task B
     //make a rotation matrix to scale the model by
-    mat4 rotation = RotateX(sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(sceneObj.angles[2]);
+    mat4 rotation = RotateX(-sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(-sceneObj.angles[2]);
     mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotation;
 
 

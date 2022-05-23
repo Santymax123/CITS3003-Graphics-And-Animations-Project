@@ -12,12 +12,15 @@ uniform mat4 Projection;
 
 void main()
 {
+    // Easier to calculate in vertex shader
     vec4 vpos = vec4(vPosition, 1.0);
 
+    // Allowed fragment shader to utilize vertex variables.
     texCoord = vTexCoord;
     norm = vNormal;
     position = vpos;
 
+    //Unchanged - Must have in vertex shaders
     gl_Position = Projection * ModelView * vpos;
 
 }

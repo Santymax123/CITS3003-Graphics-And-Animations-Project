@@ -6,6 +6,7 @@ varying vec3 norm;
 
 uniform sampler2D texture;
 
+// Copied variables from vertex shader
 uniform vec3 AmbientProduct, DiffuseProduct, SpecularProduct;
 uniform mat4 ModelView;
 uniform mat4 Projection;
@@ -15,6 +16,10 @@ uniform vec4 LightPosition;
 //task B - Object Rotate
 //link texScale to shader
 uniform float texScale;
+
+// Task G - Fragment Shader Lighting
+// This task involved copying and pasting the original lighting code found in the vertex shader cont..
+// .. whilst making small additions to allow the fragment shader to grab variables from the vertex shader.
 
 void main()
 {

@@ -79,6 +79,10 @@ int nObjects = 0;    // How many objects are currenly in the scene.
 int currObject = -1; // The current object
 int toolObj = -1;    // The object currently being modified
 
+static void makeMenu();
+
+
+
 //----------------------------------------------------------------------------
 //
 // Loads a texture by number, and binds it for later use.    
@@ -256,6 +260,7 @@ static void doRotate() {
 //------Add an object to the scene--------------------------------------------
 
 static void addObject(int id) {
+    std::cout.setstate(std::ios_base::failbit); // Stop unwanted terminal outputs
 
     vec2 currPos = currMouseXYworld(camRotSidewaysDeg);
     sceneObjs[nObjects].loc[0] = currPos[0];
@@ -288,11 +293,45 @@ static void addObject(int id) {
     setToolCallbacks(adjustLocXZ, camRotZ(),
                      adjustScaleY, mat2(0.05, 0, 0, 10.0));
     glutPostRedisplay();
+
+    makeMenu();
+}
+
+// Task J -
+// Object Delete
+static void deleteObject(int id){
+    if (id == 2) {
+        std::cout.clear();
+        cout << "Can't delete lights." << endl;
+        std::cout.setstate(std::ios_base::failbit);
+        return;
+    }
+    sceneObjs[id].meshId = NULL;
+    currObject--;
+    nObjects--;
+    makeMenu();
+}
+
+// Task J -
+// Duplicate last placed Object
+static void duplicateObject(int id) {
+    if (nObjects == maxObjects) return;
+
+    sceneObjs[nObjects] = sceneObjs[id];
+    sceneObjs[nObjects].loc[0] = (sceneObjs[id].loc[0] + 0.1);
+
+    toolObj = currObject = nObjects++;
+    setToolCallbacks(adjustLocXZ, camRotZ(),
+                     adjustScaleY, mat2(0.05, 0, 0, 10.0));
+    glutPostRedisplay();
+
+    makeMenu();
 }
 
 //------The init function-----------------------------------------------------
 
 void init(void) {
+    std::cout.setstate(std::ios_base::failbit); // Stop unwanted terminal outputs
     srand(time(NULL)); /* initialize random seed - so the starting scene varies */
     aiInit();
 
@@ -342,6 +381,12 @@ void init(void) {
     sceneObjs[1].texId = 0; // Plain texture
     sceneObjs[1].brightness = 0.2; // The light's brightness is 5 times this (below).
 
+    addObject(55); // Sphere for the first light
+    sceneObjs[2].loc = vec4(4.0, 1.0, 1.0, 1.0);
+    sceneObjs[2].scale = 0.1;
+    sceneObjs[2].texId = 0; // Plain texture
+    sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
+
     addObject(rand() % numMeshes); // A test mesh
 
     // We need to enable the depth test to discard fragments that
@@ -354,6 +399,7 @@ void init(void) {
 //----------------------------------------------------------------------------
 
 void drawMesh(SceneObject sceneObj) {
+    std::cout.setstate(std::ios_base::failbit); // Stop unwanted terminal outputs
 
     // Activate a texture, loading if needed.
     loadTextureIfNotAlreadyLoaded(sceneObj.texId);
@@ -403,6 +449,7 @@ void drawMesh(SceneObject sceneObj) {
 //----------------------------------------------------------------------------
 
 void display(void) {
+    std::cout.setstate(std::ios_base::failbit); // Stop unwanted terminal outputs
     numDisplayCalls++;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -569,12 +616,19 @@ static void mainmenu(int id) {
     }
     if (id == 50)
         doRotate();
+    if (id == 61 && currObject >= 0) {
+        duplicateObject(currObject);
+    }
+    if (id == 62 && currObject >= 0) {
+        deleteObject(currObject);
+    }
     if (id == 55 && currObject >= 0) {
         setToolCallbacks(adjustAngleYX, mat2(400, 0, 0, -400),
                          adjustAngleZTexscale, mat2(400, 0, 0, 15));
     }
     if (id == 99) exit(0);
 }
+
 
 static void makeMenu() {
     int objectId = createArrayMenu(numMeshes, objectMenuEntries, objectMenu);
@@ -596,6 +650,9 @@ static void makeMenu() {
     glutCreateMenu(mainmenu);
     glutAddMenuEntry("Rotate/Move Camera", 50);
     glutAddSubMenu("Add object", objectId);
+    
+    glutAddMenuEntry("Duplicate Object", 61);
+    glutAddMenuEntry("Delete Object", 62);
     glutAddMenuEntry("Position/Scale", 41);
     glutAddMenuEntry("Rotation/Texture Scale", 55);
     glutAddSubMenu("Material", materialMenuId);
@@ -712,6 +769,7 @@ void fileErr(char *fileName) {
 //----------------------------------------------------------------------------
 
 int main(int argc, char *argv[]) {
+    std::cout.setstate(std::ios_base::failbit); // Stop unwanted terminal outputs
     // Get the program name, excluding the directory, for the window title
     programName = argv[0];
     for (char *cpointer = argv[0]; *cpointer != 0; cpointer++)

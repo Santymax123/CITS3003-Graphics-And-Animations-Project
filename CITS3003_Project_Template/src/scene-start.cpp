@@ -310,7 +310,9 @@ void init(void) {
     CheckError(); // Allocate texture objects
 
     // Load shaders and use the resulting shader program
-    shaderProgram = InitShader("res/shaders/vStart.glsl", "res/shaders/fStart.glsl");
+    //two different commands for part h and part g shaders (as recommended by David's CITS3003 Guide)
+    //shaderProgram = InitShader("res/shaders/vStart-f.glsl", "res/shaders/fStart-f.glsl");
+    shaderProgram = InitShader("res/shaders/vStart-g.glsl", "res/shaders/fStart-g.glsl");
 
     glUseProgram(shaderProgram);
     CheckError();
@@ -373,8 +375,9 @@ void drawMesh(SceneObject sceneObj) {
     // Set the model matrix - this should combine translation, rotation and scaling based on what's
     // in the sceneObj structure (see near the top of the program).
 
-    //task B
+    //task B - Object Rotate
     //make a rotation matrix to scale the model by
+    // flip rotation for X and Z as to match the sample solution
     mat4 rotation = RotateX(-sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(-sceneObj.angles[2]);
     mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotation;
 
@@ -409,6 +412,8 @@ void display(void) {
     // backwards.  You'll need to add appropriate rotations.
 
     //Task A - Camera Rotate
+    //make a rotation matrix
+    //multiply view by rotation matrix
     
     mat4 rotation = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
     view = Translate(0.0, 0.0, -viewDist) * rotation;
@@ -465,12 +470,13 @@ static void adjustBrightnessY(vec2 by) {
     sceneObjs[toolObj].loc[1] += by[1];
 }
 
-//Task C
+//Task C - Materials
+//create tool for Ambient and Diffuse
 static void adjustAmbientDiffuse(vec2 ad) {
     sceneObjs[toolObj].ambient += ad[0];
     sceneObjs[toolObj].diffuse += ad[1];
 }
-
+//create tool for Specular and Shine
 static void adjustSpecularShine(vec2 ss) {
     sceneObjs[toolObj].specular += ss[0];
     sceneObjs[toolObj].shine += ss[1];
@@ -532,7 +538,9 @@ static void materialMenu(int id) {
         setToolCallbacks(adjustRedGreen, mat2(1, 0, 0, 1),
                          adjustBlueBrightness, mat2(1, 0, 0, 1));
     }
-    //Task C - creating tool for adjusting A/D/S/S
+    //Task C - Materials
+    //create tool for adjusting A/D/S/S
+    //attaches mouse left and middle click to tools created
     else if (id == 20) {
         toolObj = currObject;
         setToolCallbacks(adjustAmbientDiffuse, mat2(1.0, 0.0, 0.0, 1.0), adjustSpecularShine, mat2(1.0, 0.0, 0.0, 1.0));
@@ -658,12 +666,20 @@ void reshape(int width, int height) {
     //     - when the width is less than the height, the view should adjust so
     //         that the same part of the scene is visible across the width of
     //         the window.
-//task D
+//task D - Closeup
+// make nearDist much closer so that we avoid clipping till 0.02 instead of 0.2
     GLfloat nearDist = 0.02;
-    projection = Frustum(-nearDist * (float) width / (float) height,
-                         nearDist * (float) width / (float) height,
-                         -nearDist, nearDist,
-                         nearDist, 100.0);
+//task E - reshape
+//Frustum is (left, right, bottom, top, near, far)
+//allready works when hieght is decreased
+//if width is less than height we multiply top and bottom by height/width
+//if height is less than width we multiply left and right by width/height
+    if (width < height) {
+        projection = Frustum(-nearDist, nearDist, -nearDist * (float) height / (float) width, nearDist * (float) height / (float) width, nearDist, 100.0);
+    }
+    else{
+        projection = Frustum(-nearDist * (float) width / (float) height, nearDist * (float) width / (float) height, -nearDist, nearDist, nearDist, 100.0);
+    }
 }
 
 //----------------------------------------------------------------------------

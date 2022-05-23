@@ -12,7 +12,8 @@ uniform mat4 Projection;
 uniform float Shininess;
 uniform vec4 LightPosition;
 
-//task B
+//task B - Object Rotate
+//link texScale to shader
 uniform float texScale;
 
 void main()
@@ -44,14 +45,17 @@ void main()
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
 
-    //task F
-    //calculate distance from light to object
-    //Light drop off after a set distance (0.05) for this example
-    float dist = 0.05 + length(Lvec);
-
-    color.rgb = globalAmbient + ((ambient + diffuse + specular) / dist);
+    //task F - Light Reduction
+    //find distance from light to vector
+    //calculate attenuation using quadratic formula
+    //constant of 0.075 was chosen as it looked similar to sample solution, however more experimentation could likely give a closer solution
+    // multiply all lighting (except globalAmbient) by attenuation factor
+    float dist = length(Lvec);
+    float attenuation = (1.0 / (0.075 + 0.075 * dist + 0.075 * dist * dist));
+    color.rgb = globalAmbient  + (ambient + specular + diffuse) * attenuation;
     color.a = 1.0;
 
-    //Task B - added * texScale
+    //task B - Object Rotate
+    //multiply texture by texScale
     gl_FragColor = (color * texture2D( texture, texCoord * 2.0 * texScale));
 }

@@ -38,6 +38,7 @@ void main()
     float Ks = pow( max(dot(N, H), 0.0), Shininess );
     vec3  specular = Ks * SpecularProduct;
 
+
     if (dot(L, N) < 0.0 ) {
 	specular = vec3(0.0, 0.0, 0.0);
     } 
@@ -50,12 +51,17 @@ void main()
     //calculate attenuation using quadratic formula
     //constant of 0.075 was chosen as it looked similar to sample solution, however more experimentation could likely give a closer solution
     // multiply all lighting (except globalAmbient) by attenuation factor
+    // Task H - Shine
+    //Removed + specular from color.rgb calculation.
     float dist = length(Lvec);
     float attenuation = (1.0 / (0.075 + 0.075 * dist + 0.075 * dist * dist));
-    color.rgb = globalAmbient  + (ambient + specular + diffuse) * attenuation;
+    color.rgb = globalAmbient  + (ambient + diffuse) * attenuation;
     color.a = 1.0;
 
     //task B - Object Rotate
     //multiply texture by texScale
-    gl_FragColor = (color * texture2D( texture, texCoord * 2.0 * texScale));
+    // Task H - Shine
+    //Specular shine always shines to white, added specular calculation outside of texture and color calculation cont..
+    // .. to allow for specular shine to be calculated individually so not to take into account the texture nor color.
+    gl_FragColor = (color * texture2D( texture, texCoord * 2.0 * texScale)) + vec4(specular * attenuation, 1.0);
 }

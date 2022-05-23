@@ -46,7 +46,7 @@ void main()
 
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-    //task F
+    //task F - Light Reduction
     //find distance from light to vector
     //calculate attenuation using quadratic formula
     // multiply all lighting (except globalAmbient) by attenuation factor

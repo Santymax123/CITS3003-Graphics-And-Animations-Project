@@ -485,7 +485,6 @@ void display(void) {
     // Task I - Second Light
     // send to shaders
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"), 1, lightPosition2); CheckError();
-    glUniform3fv(glGetUniformLocation(shaderProgram, "Light2Angles"), 1, lightObj2.angles); CheckError();
 
     // Task J - Spotlight
     // send to shaders help from (https://learnopengl.com/Lighting/Light-casters) shown in David's CITS3003 guide.

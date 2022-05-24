@@ -32,9 +32,12 @@ uniform vec3 spotLightDirection;
 uniform float cutOff;
 float attenuation3;
 
+float spotLightBrightness;
+
 void main()
 {
     vec3 pos = (ModelView * position).xyz;
+    vec3 lightDir = normalize(-Light2Angles);
     
     // Vector from first light from the fragment    
     vec3 Lvec = LightPosition.xyz - pos;
@@ -108,17 +111,15 @@ void main()
     // Task J - SpotLight
     // Spotlight not fully functional, additionally rotates based on camera movement.
     // Theta calulcation taken from (https://learnopengl.com/Lighting/Light-casters)
-    float theta = dot(L3, normalize( - spotLightDirection ));
+    float theta = dot(L3, normalize( spotLightDirection ));
 
     if (theta > cutOff) {
-        // Calculate attenuation for spotLight
-        float dist3 = length(Lvec3);
-        attenuation3 = (1.0 / (0.075 + 0.075 * dist3 + 0.075 * dist3 * dist3));
+        // Add a brightness to the spotlight to be used in the rgb calculation.
+        spotLightBrightness = 2.0;
     }
-    else
-        attenuation3 = 0.0;
-
-    color.rgb = globalAmbient  + ((ambient + diffuse) * attenuation) + ((ambient + diffuse2) * attenuation2) + ((ambient + diffuse3) * attenuation3);
+    else spotLightBrightness = 0.0;
+    
+    color.rgb = globalAmbient  + ((ambient + diffuse) * attenuation) + ((ambient + diffuse2) * attenuation2) + ((ambient + diffuse3) * spotLightBrightness);
     color.a = 1.0;
 
     // Task B - Object Rotate

@@ -388,6 +388,12 @@ void init(void) {
     sceneObjs[2].texId = 0; // Plain texture
     sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
 
+    // Task J - SpotLight
+    addObject(55); // Sphere for the SpotLight
+    sceneObjs[3].loc = vec4(4.0, 1.0, 1.0, 1.0);
+    sceneObjs[3].scale = 0.2; // Scale for SpotLight is the biggest.
+    sceneObjs[3].texId = 0; // Plain texture
+    sceneObjs[3].brightness = 0.2; // The light's brightness is 5 times this (below).
 
     addObject(rand() % numMeshes); // A test mesh
 
@@ -466,7 +472,6 @@ void display(void) {
     
     mat4 rotation = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
     view = Translate(0.0, 0.0, -viewDist) * rotation;
-
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc; // First Light
 
@@ -475,15 +480,24 @@ void display(void) {
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = view * lightObj2.loc; // Second Light
 
+    //Task J - SpotLight
+    //set position for the SpotLight
+    SceneObject lightObj3 = sceneObjs[3];
+    vec4 lightPosition3 = view * lightObj3.loc; // Spot Light
+
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"), 1, lightPosition); CheckError();
     
     //Task I - Light2
     //send to shaders
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"), 1, lightPosition2); CheckError();
+    glUniform3fv(glGetUniformLocation(shaderProgram, "Light2Angles"), 1, lightObj2.angles); CheckError();
 
-    //glUniform4fv(glGetUniformLocation(shaderProgram, "LightDirection"),
-    //             1, lightDirection);
-    //CheckError();
+    // Task J - Spotlight
+    // send to shaders help from (https://learnopengl.com/Lighting/Light-casters) shown in David's CITS3003 guide.
+    // cutOff cosine calculation taken from (https://learnopengl.com/Lighting/Light-casters)
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"), 1, lightPosition3); CheckError();
+    glUniform3fv(glGetUniformLocation(shaderProgram, "spotLightDirection"), 1, lightObj3.angles); CheckError();
+    glUniform1f(glGetUniformLocation(shaderProgram, "cutOff"), cos(12.5f)); CheckError();
 
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
@@ -581,7 +595,12 @@ static void adjustLightAngleYX(vec2 bc) {
     sceneObjs[3].angles[0] += bc[1];
 }
 
-
+//Task J - Spotlight
+static void adjustLightAngleZTexscale(vec2 az_ts) {
+    sceneObjs[3].angles[2] += az_ts[0];
+    sceneObjs[3].texScale += az_ts[1];
+}
+//Task J - Spotlight
 static void spotLightMenu(int id) {
     deactivateTool();
     if(id == 76) {
@@ -590,7 +609,7 @@ static void spotLightMenu(int id) {
                          adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
     } else if (id == 77) {
         toolObj = 3;
-        setToolCallbacks(adjustLightAngleYX, mat2(400, 0, 0, -400), 0, 0);
+        setToolCallbacks(adjustLightAngleYX, mat2(400, 0, 0, -400), adjustLightAngleZTexscale, mat2(400, 0, 0, -400));
     }
 }
 

@@ -297,7 +297,7 @@ static void addObject(int id) {
     makeMenu();
 }
 
-// Task J -
+// Task J - Deletion and Duplication
 // Object Delete
 static void deleteObject(int id){
     if (id == 3) {
@@ -312,7 +312,7 @@ static void deleteObject(int id){
     makeMenu();
 }
 
-// Task J -
+// Task J - Deletion and Duplication
 // Duplicate last placed Object
 static void duplicateObject(int id) {
     if (nObjects == maxObjects) return;
@@ -381,22 +381,13 @@ void init(void) {
     sceneObjs[1].texId = 0; // Plain texture
     sceneObjs[1].brightness = 0.2; // The light's brightness is 5 times this (below).
 
-    // Part I - Second Light
+    // Task I - Light2
     addObject(55); // Sphere for the second light
     sceneObjs[2].loc = vec4(4.0, 1.0, 1.0, 1.0);
     sceneObjs[2].scale = 0.2;
     sceneObjs[2].texId = 0; // Plain texture
     sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
 
-    // Part J - Spotlight
-    addObject(55); // Sphere for the spotlight
-    sceneObjs[3].loc = vec4(5.0, 1.0, 1.0, 1.0);
-    sceneObjs[3].scale = 0.3;
-    sceneObjs[3].texId = 0; // Plain texture
-    sceneObjs[3].brightness = 0.2; // The light's brightness is 5 times this (below).
-    sceneObjs[3].angles[0] = 0.0;
-    sceneObjs[3].angles[1] = 180.0;
-    sceneObjs[3].angles[2] = 0.0;
 
     addObject(rand() % numMeshes); // A test mesh
 
@@ -479,24 +470,16 @@ void display(void) {
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc; // First Light
 
+    //Task I - Light2
+    //set position for second light
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = view * lightObj2.loc; // Second Light
 
-    SceneObject lightObj3 = sceneObjs[3];
-    vec4 lightPosition3 = view * lightObj3.loc; // Spot Light
-
-    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"),
-                 1, lightPosition); 
-    CheckError();
-    //Second Light
-    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
-                 1, lightPosition2);
-    CheckError();
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"), 1, lightPosition); CheckError();
     
-    // Spotlight
-    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
-                 1, lightPosition3);
-    CheckError();
+    //Task I - Light2
+    //send to shaders
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"), 1, lightPosition2); CheckError();
 
     //glUniform4fv(glGetUniformLocation(shaderProgram, "LightDirection"),
     //             1, lightDirection);
@@ -505,7 +488,7 @@ void display(void) {
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
 
-        vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 0.5;
+        vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 2.0;
         glUniform3fv(glGetUniformLocation(shaderProgram, "AmbientProduct"), 1, so.ambient * rgb);
         CheckError();
         glUniform3fv(glGetUniformLocation(shaderProgram, "DiffuseProduct"), 1, so.diffuse * rgb);

@@ -33,59 +33,28 @@ void main()
     
     // The vector to the light from the vertex    
     vec3 Lvec = LightPosition.xyz - pos;
-
+    // Vector from second light to vertex
     vec3 Lvec2 = LightPosition2.xyz - pos;
 
-    // The vector to the light from the vertex    
-    vec3 Lvec3 = LightPosition3.xyz - pos; // Spotlight
-
     vec3 L = normalize( Lvec );   // Direction to the light source
-    vec3 L2 = normalize( Lvec2 );  
-    vec3 L3 = normalize( Lvec3 ); // Spotlight
+    vec3 L2 = normalize( Lvec2 ); // Direction to second light source
     vec3 E = normalize( -pos );   // Direction to the eye/camera
     vec3 H = normalize( L + E );  // Halfway vector
-    vec3 H2 = normalize( L2 + E );
-    vec3 H3 = normalize( L3 + E );  // Halfway vector
-
     vec3 N = normalize( (ModelView*vec4(norm, 0.0)).xyz );
 
     // Compute terms in the illumination equation
     vec3 ambient = AmbientProduct;
-
-    vec3 ambient2 = AmbientProduct;
-
-    vec3 ambient3 = AmbientProduct; // Spotlight
-
     float Kd = max( dot(L, N), 0.0 );
     vec3  diffuse = Kd * DiffuseProduct;
 
-    float Kd2 = max( dot(L2, N), 0.0 );
-    vec3  diffuse2 = Kd2 * DiffuseProduct;
-
-    float Kd3 = max( dot(L3, N), 0.0 ); // Spotlight
-    vec3  diffuse3 = Kd3 * DiffuseProduct;
-
     float Ks = pow( max(dot(N, H), 0.0), Shininess );
     vec3  specular = Ks * SpecularProduct;
-
-    float Ks2 = pow( max(dot(N, H2), 0.0), Shininess ); // Second Light
-    vec3  specular2 = Ks2 * SpecularProduct;
-
-    float Ks3 = pow( max(dot(N, H3), 0.0), Shininess ); // Spotlight
-    vec3  specular3 = Ks3 * SpecularProduct;
 
 
     if (dot(L, N) < 0.0 ) {
 	    specular = vec3(0.0, 0.0, 0.0);
     } 
 
-    if (dot(L2, N) < 0.0 ) {
-	    specular2 = vec3(0.0, 0.0, 0.0);
-    } 
-
-    if (dot(L3, N) < 0.0 ) { 
-	    specular3 = vec3(0.0, 0.0, 0.0); // Spotlight
-    } 
 
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
@@ -99,7 +68,13 @@ void main()
     //Removed + specular from color.rgb calculation.
     float dist = length(Lvec);
     float attenuation = (1.0 / (0.075 + 0.075 * dist + 0.075 * dist * dist));
-    color.rgb = globalAmbient  + ((ambient + diffuse)  + (ambient2 + diffuse2) + (ambient3 + diffuse3)) * attenuation;
+
+    //task I - Light2
+    //calculate attenuation for second light
+    float dist2 = length(Lvec2);
+    float attenuation2 = (1.0 / (0.075 + 0.075 * dist2 + 0.075 * dist2 * dist2));
+
+    color.rgb = globalAmbient  + ((ambient + diffuse) * attenuation) + ((ambient + diffuse) * attenuation2);
     color.a = 1.0;
 
     //task B - Object Rotate
@@ -107,5 +82,5 @@ void main()
     // Task H - Shine
     //Specular shine always shines to white, added specular calculation outside of texture and color calculation cont..
     // .. to allow for specular shine to be calculated individually so not to take into account the texture nor color.
-    gl_FragColor = (color * texture2D( texture, texCoord * 2.0 * texScale)) + vec4(specular + specular2 + specular3 * attenuation, 1.0);
+    gl_FragColor = (color * texture2D( texture, texCoord * 2.0 * texScale));
 }

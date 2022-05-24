@@ -300,7 +300,7 @@ static void addObject(int id) {
 // Task J -
 // Object Delete
 static void deleteObject(int id){
-    if (id == 2) {
+    if (id == 3) {
         std::cout.clear();
         cout << "Can't delete lights." << endl;
         std::cout.setstate(std::ios_base::failbit);
@@ -381,11 +381,22 @@ void init(void) {
     sceneObjs[1].texId = 0; // Plain texture
     sceneObjs[1].brightness = 0.2; // The light's brightness is 5 times this (below).
 
-    addObject(55); // Sphere for the first light
+    // Part I - Second Light
+    addObject(55); // Sphere for the second light
     sceneObjs[2].loc = vec4(4.0, 1.0, 1.0, 1.0);
-    sceneObjs[2].scale = 0.1;
+    sceneObjs[2].scale = 0.2;
     sceneObjs[2].texId = 0; // Plain texture
     sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
+
+    // Part J - Spotlight
+    addObject(55); // Sphere for the spotlight
+    sceneObjs[3].loc = vec4(5.0, 1.0, 1.0, 1.0);
+    sceneObjs[3].scale = 0.3;
+    sceneObjs[3].texId = 0; // Plain texture
+    sceneObjs[3].brightness = 0.2; // The light's brightness is 5 times this (below).
+    sceneObjs[3].angles[0] = 0.0;
+    sceneObjs[3].angles[1] = 180.0;
+    sceneObjs[3].angles[2] = 0.0;
 
     addObject(rand() % numMeshes); // A test mesh
 
@@ -466,16 +477,35 @@ void display(void) {
     view = Translate(0.0, 0.0, -viewDist) * rotation;
 
     SceneObject lightObj1 = sceneObjs[1];
-    vec4 lightPosition = view * lightObj1.loc;
+    vec4 lightPosition = view * lightObj1.loc; // First Light
+
+    SceneObject lightObj2 = sceneObjs[2];
+    vec4 lightPosition2 = view * lightObj2.loc; // Second Light
+
+    SceneObject lightObj3 = sceneObjs[3];
+    vec4 lightPosition3 = view * lightObj3.loc; // Spot Light
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"),
-                 1, lightPosition);
+                 1, lightPosition); 
     CheckError();
+    //Second Light
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"),
+                 1, lightPosition2);
+    CheckError();
+    
+    // Spotlight
+    glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"),
+                 1, lightPosition3);
+    CheckError();
+
+    //glUniform4fv(glGetUniformLocation(shaderProgram, "LightDirection"),
+    //             1, lightDirection);
+    //CheckError();
 
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
 
-        vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 2.0;
+        vec3 rgb = so.rgb * lightObj1.rgb * so.brightness * lightObj1.brightness * 0.5;
         glUniform3fv(glGetUniformLocation(shaderProgram, "AmbientProduct"), 1, so.ambient * rgb);
         CheckError();
         glUniform3fv(glGetUniformLocation(shaderProgram, "DiffuseProduct"), 1, so.diffuse * rgb);
@@ -549,9 +579,35 @@ static void lightMenu(int id) {
         toolObj = 1;
         setToolCallbacks(adjustRedGreen, mat2(1.0, 0, 0, 1.0),
                          adjustBlueBrightness, mat2(1.0, 0, 0, 1.0));
-    } else {
+    } else if (id == 80) { 
+        toolObj = 2;
+        setToolCallbacks(adjustLocXZ, camRotZ(),
+                         adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
+    } else if (id >= 81 && id <= 84) {
+        toolObj = 2;
+        setToolCallbacks(adjustRedGreen, mat2(1.0, 0, 0, 1.0),
+                         adjustBlueBrightness, mat2(1.0, 0, 0, 1.0));
+    }  else {
         printf("Error in lightMenu\n");
-        exit(1);
+        exit(1);  
+    }
+}
+
+static void adjustLightAngleYX(vec2 bc) {
+    sceneObjs[3].angles[1] += bc[0];
+    sceneObjs[3].angles[0] += bc[1];
+}
+
+
+static void spotLightMenu(int id) {
+    deactivateTool();
+    if(id == 76) {
+        toolObj = 3;
+        setToolCallbacks(adjustLocXZ, camRotZ(),
+                         adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
+    } else if (id == 77) {
+        toolObj = 3;
+        setToolCallbacks(adjustLightAngleYX, mat2(400, 0, 0, -400), 0, 0);
     }
 }
 
@@ -641,6 +697,10 @@ static void makeMenu() {
     int texMenuId = createArrayMenu(numTextures, textureMenuEntries, texMenu);
     int groundMenuId = createArrayMenu(numTextures, textureMenuEntries, groundMenu);
 
+    int spotLightMenuId = glutCreateMenu(spotLightMenu);
+    glutAddMenuEntry("Move Spotlight", 76);
+    glutAddMenuEntry("Rotate Spotlight", 77);
+
     int lightMenuId = glutCreateMenu(lightMenu);
     glutAddMenuEntry("Move Light 1", 70);
     glutAddMenuEntry("R/G/B/All Light 1", 71);
@@ -659,6 +719,7 @@ static void makeMenu() {
     glutAddSubMenu("Texture", texMenuId);
     glutAddSubMenu("Ground Texture", groundMenuId);
     glutAddSubMenu("Lights", lightMenuId);
+    glutAddSubMenu("SpotLight", spotLightMenuId);
     glutAddMenuEntry("EXIT", 99);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }

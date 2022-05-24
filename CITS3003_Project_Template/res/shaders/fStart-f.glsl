@@ -3,7 +3,7 @@ varying vec2 texCoord;  // The third coordinate is always 0.0 and is discarded
 
 uniform sampler2D texture;
 
-//task B - Object Rotate
+// Task B - Object Rotate
 uniform float texScale;
 
 void main()

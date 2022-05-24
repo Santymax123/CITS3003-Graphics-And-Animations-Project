@@ -81,8 +81,6 @@ int toolObj = -1;    // The object currently being modified
 
 static void makeMenu();
 
-
-
 //----------------------------------------------------------------------------
 //
 // Loads a texture by number, and binds it for later use.    
@@ -157,7 +155,7 @@ void loadMeshIfNotAlreadyLoaded(int meshNumber) {
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(float) * 6 * nVerts, sizeof(float) * 3 * nVerts, mesh->mNormals);
 
     // Load the element index data
-    //GLuint elements[mesh->mNumFaces*3];
+    // GLuint elements[mesh->mNumFaces*3];
     std::vector<GLuint> elements = std::vector<GLuint>(mesh->mNumFaces * 3, 0);
 
     for (GLuint i = 0; i < mesh->mNumFaces; i++) {
@@ -298,12 +296,12 @@ static void addObject(int id) {
 }
 
 // Task J - Deletion and Duplication
-// Object Delete
+// Object Delete (Deletes previous object)
 static void deleteObject(int id){
     if (id == 3) {
         std::cout.clear();
         cout << "Can't delete lights." << endl;
-        std::cout.setstate(std::ios_base::failbit);
+        std::cout.setstate(std::ios_base::failbit); // Stop unwanted terminal outputs
         return;
     }
     sceneObjs[id].meshId = NULL;
@@ -349,7 +347,7 @@ void init(void) {
     CheckError(); // Allocate texture objects
 
     // Load shaders and use the resulting shader program
-    //two different commands for part h and part g shaders (as recommended by David's CITS3003 Guide)
+    //two different commands for part f and part g shaders (as recommended by David's CITS3003 Guide)
     //shaderProgram = InitShader("res/shaders/vStart-f.glsl", "res/shaders/fStart-f.glsl");
     shaderProgram = InitShader("res/shaders/vStart-g.glsl", "res/shaders/fStart-g.glsl");
 
@@ -376,21 +374,21 @@ void init(void) {
     sceneObjs[0].texScale = 5.0; // Repeat the texture.
 
     addObject(55); // Sphere for the first light
-    sceneObjs[1].loc = vec4(2.0, 1.0, 1.0, 1.0);
-    sceneObjs[1].scale = 0.1;
+    sceneObjs[1].loc = vec4(2.0, 1.0, 1.0, 1.0); // Light size and position increasingly scales to make it easier to distinguish between light sources
+    sceneObjs[1].scale = 0.1; // Scale for first light is the smallest.
     sceneObjs[1].texId = 0; // Plain texture
     sceneObjs[1].brightness = 0.2; // The light's brightness is 5 times this (below).
 
     // Task I - Light2
     addObject(55); // Sphere for the second light
-    sceneObjs[2].loc = vec4(4.0, 1.0, 1.0, 1.0);
-    sceneObjs[2].scale = 0.2;
+    sceneObjs[2].loc = vec4(3.0, 1.0, 1.0, 1.0); // Light size and position increasingly scales to make it easier to distinguish between light sources
+    sceneObjs[2].scale = 0.15; // Scale for second light is the middle.
     sceneObjs[2].texId = 0; // Plain texture
     sceneObjs[2].brightness = 0.2; // The light's brightness is 5 times this (below).
 
     // Task J - SpotLight
     addObject(55); // Sphere for the SpotLight
-    sceneObjs[3].loc = vec4(4.0, 1.0, 1.0, 1.0);
+    sceneObjs[3].loc = vec4(4.0, 1.0, 1.0, 1.0); // Light size and position increasingly scales to make it easier to distinguish between light sources
     sceneObjs[3].scale = 0.2; // Scale for SpotLight is the biggest.
     sceneObjs[3].texId = 0; // Plain texture
     sceneObjs[3].brightness = 0.2; // The light's brightness is 5 times this (below).
@@ -422,19 +420,17 @@ void drawMesh(SceneObject sceneObj) {
     // Set the texture scale for the shaders
     glUniform1f(glGetUniformLocation(shaderProgram, "texScale"), sceneObj.texScale);
 
-
     // Set the projection matrix for the shaders
     glUniformMatrix4fv(projectionU, 1, GL_TRUE, projection);
 
     // Set the model matrix - this should combine translation, rotation and scaling based on what's
     // in the sceneObj structure (see near the top of the program).
 
-    //task B - Object Rotate
-    //make a rotation matrix to scale the model by
-    // flip rotation for X and Z as to match the sample solution
+    // Task B - Object Rotate
+    // Make a rotation matrix to scale the model by
+    // Flip rotation for X and Z as to match the sample solution
     mat4 rotation = RotateX(-sceneObj.angles[0]) * RotateY(sceneObj.angles[1]) * RotateZ(-sceneObj.angles[2]);
     mat4 model = Translate(sceneObj.loc) * Scale(sceneObj.scale) * rotation;
-
 
     // Set the model-view matrix for the shaders
     glUniformMatrix4fv(modelViewU, 1, GL_TRUE, view * model);
@@ -466,29 +462,28 @@ void display(void) {
     // Set the view matrix. To start with this just moves the camera
     // backwards.  You'll need to add appropriate rotations.
 
-    //Task A - Camera Rotate
-    //make a rotation matrix
-    //multiply view by rotation matrix
-    
+    // Task A - Camera Rotate
+    // Make a rotation matrix
+    // Multiply view by rotation matrix
     mat4 rotation = RotateX(camRotUpAndOverDeg) * RotateY(camRotSidewaysDeg);
     view = Translate(0.0, 0.0, -viewDist) * rotation;
     SceneObject lightObj1 = sceneObjs[1];
     vec4 lightPosition = view * lightObj1.loc; // First Light
 
-    //Task I - Light2
-    //set position for second light
+    // Task I - Second Light
+    // set position for second light
     SceneObject lightObj2 = sceneObjs[2];
     vec4 lightPosition2 = view * lightObj2.loc; // Second Light
 
-    //Task J - SpotLight
-    //set position for the SpotLight
+    // Task J - SpotLight
+    // set position for the SpotLight
     SceneObject lightObj3 = sceneObjs[3];
     vec4 lightPosition3 = view * lightObj3.loc; // Spot Light
 
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition"), 1, lightPosition); CheckError();
     
-    //Task I - Light2
-    //send to shaders
+    // Task I - Second Light
+    // send to shaders
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition2"), 1, lightPosition2); CheckError();
     glUniform3fv(glGetUniformLocation(shaderProgram, "Light2Angles"), 1, lightObj2.angles); CheckError();
 
@@ -497,7 +492,7 @@ void display(void) {
     // cutOff cosine calculation taken from (https://learnopengl.com/Lighting/Light-casters)
     glUniform4fv(glGetUniformLocation(shaderProgram, "LightPosition3"), 1, lightPosition3); CheckError();
     glUniform3fv(glGetUniformLocation(shaderProgram, "spotLightDirection"), 1, lightObj3.angles); CheckError();
-    glUniform1f(glGetUniformLocation(shaderProgram, "cutOff"), cos(12.5f)); CheckError();
+    glUniform1f(glGetUniformLocation(shaderProgram, "cutOff"), cos(12.5f) / 1.1); CheckError();
 
     for (int i = 0; i < nObjects; i++) {
         SceneObject so = sceneObjs[i];
@@ -544,13 +539,14 @@ static void adjustBrightnessY(vec2 by) {
     sceneObjs[toolObj].loc[1] += by[1];
 }
 
-//Task C - Materials
-//create tool for Ambient and Diffuse
+// Task C - Materials
+// Create tool for Ambient and Diffuse
 static void adjustAmbientDiffuse(vec2 ad) {
     sceneObjs[toolObj].ambient += ad[0];
     sceneObjs[toolObj].diffuse += ad[1];
 }
-//create tool for Specular and Shine
+// Task C - Materials
+// Create tool for Specular and Shine
 static void adjustSpecularShine(vec2 ss) {
     sceneObjs[toolObj].specular += ss[0];
     sceneObjs[toolObj].shine += ss[1];
@@ -590,17 +586,21 @@ static void lightMenu(int id) {
     }
 }
 
+// Task J - Spotlight
+// Allows only the spotlight angle to be adjusted with mouse
 static void adjustLightAngleYX(vec2 bc) {
     sceneObjs[3].angles[1] += bc[0];
     sceneObjs[3].angles[0] += bc[1];
 }
 
-//Task J - Spotlight
+// Task J - Spotlight
+// Allows only the spotlight angle to be adjusted with mouse
 static void adjustLightAngleZTexscale(vec2 az_ts) {
     sceneObjs[3].angles[2] += az_ts[0];
     sceneObjs[3].texScale += az_ts[1];
 }
-//Task J - Spotlight
+// Task J - Spotlight
+// Menu to select spotlight move and direction
 static void spotLightMenu(int id) {
     deactivateTool();
     if(id == 76) {
@@ -609,7 +609,7 @@ static void spotLightMenu(int id) {
                          adjustBrightnessY, mat2(1.0, 0.0, 0.0, 10.0));
     } else if (id == 77) {
         toolObj = 3;
-        setToolCallbacks(adjustLightAngleYX, mat2(400, 0, 0, -400), adjustLightAngleZTexscale, mat2(400, 0, 0, -400));
+        setToolCallbacks(adjustLightAngleYX, mat2(400, 0, 0, 400), adjustLightAngleZTexscale, mat2(400, 0, 0, 0));
     }
 }
 
@@ -643,9 +643,9 @@ static void materialMenu(int id) {
         setToolCallbacks(adjustRedGreen, mat2(1, 0, 0, 1),
                          adjustBlueBrightness, mat2(1, 0, 0, 1));
     }
-    //Task C - Materials
-    //create tool for adjusting A/D/S/S
-    //attaches mouse left and middle click to tools created
+    // Task C - Materials
+    // Create tool for adjusting A/D/S/S
+    // Attaches mouse left and middle click to tools created
     else if (id == 20) {
         toolObj = currObject;
         setToolCallbacks(adjustAmbientDiffuse, mat2(1.0, 0.0, 0.0, 1.0), adjustSpecularShine, mat2(1.0, 0.0, 0.0, 1.0));
@@ -693,12 +693,14 @@ static void makeMenu() {
 
     int materialMenuId = glutCreateMenu(materialMenu);
     glutAddMenuEntry("R/G/B/All", 10);
-    //task c - took out unimplemented
+    // Task C - took out unimplemented
     glutAddMenuEntry("Ambient/Diffuse/Specular/Shine", 20);
 
     int texMenuId = createArrayMenu(numTextures, textureMenuEntries, texMenu);
     int groundMenuId = createArrayMenu(numTextures, textureMenuEntries, groundMenu);
 
+    // Task J - SpotLight
+    // Menu entry to allow spotlights to be controlled
     int spotLightMenuId = glutCreateMenu(spotLightMenu);
     glutAddMenuEntry("Move Spotlight", 76);
     glutAddMenuEntry("Rotate Spotlight", 77);
@@ -712,7 +714,6 @@ static void makeMenu() {
     glutCreateMenu(mainmenu);
     glutAddMenuEntry("Rotate/Move Camera", 50);
     glutAddSubMenu("Add object", objectId);
-    
     glutAddMenuEntry("Duplicate Object", 61);
     glutAddMenuEntry("Delete Object", 62);
     glutAddMenuEntry("Position/Scale", 41);
@@ -786,14 +787,15 @@ void reshape(int width, int height) {
     //     - when the width is less than the height, the view should adjust so
     //         that the same part of the scene is visible across the width of
     //         the window.
-//task D - Closeup
-// make nearDist much closer so that we avoid clipping till 0.02 instead of 0.2
+    // Task D - Closeup
+    // Make nearDist much closer so that we avoid clipping till 0.02 instead of 0.2
     GLfloat nearDist = 0.02;
-//task E - reshape
-//Frustum is (left, right, bottom, top, near, far)
-//allready works when hieght is decreased
-//if width is less than height we multiply top and bottom by height/width
-//if height is less than width we multiply left and right by width/height
+
+    // Task E - reshape
+    // Frustum is (left, right, bottom, top, near, far)
+    // Allready works when hieght is decreased
+    // If width is less than height we multiply top and bottom by height/width
+    // If height is less than width we multiply left and right by width/height
     if (width < height) {
         projection = Frustum(-nearDist, nearDist, -nearDist * (float) height / (float) width, nearDist * (float) height / (float) width, nearDist, 100.0);
     }

@@ -1,4 +1,3 @@
-#howdy
 # Build Instructions:
 
 ## General Remarks

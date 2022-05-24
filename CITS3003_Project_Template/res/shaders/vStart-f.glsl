@@ -46,11 +46,11 @@ void main()
 
     // globalAmbient is independent of distance from the light source
     vec3 globalAmbient = vec3(0.1, 0.1, 0.1);
-    //task F - Light Reduction
-    //find distance from light to vector
-    //calculate attenuation using quadratic formula
-    //used 0.075 as a constant. Tis constant can be adjusted however we found that 0.075 emulated the sample solutions the best.
-    // multiply all lighting (except globalAmbient) by attenuation factor
+    // Task F - Light Reduction
+    // Find distance from light to vector
+    // Calculate attenuation using quadratic formula
+    // Used 0.075 as a constant. Tis constant can be adjusted however we found that 0.075 emulated the sample solutions the best.
+    // Multiply all lighting (except globalAmbient) by attenuation factor
     float dist = length(Lvec);
     float attenuation = (1.0 / (0.075 + 0.075 * dist + 0.075 * dist * dist));
     color.rgb = globalAmbient  + (ambient + specular + diffuse) * attenuation;

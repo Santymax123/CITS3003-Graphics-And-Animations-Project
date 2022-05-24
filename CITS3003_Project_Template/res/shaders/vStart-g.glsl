@@ -2,7 +2,7 @@ attribute vec3 vPosition;
 attribute vec3 vNormal;
 attribute vec2 vTexCoord;
 
-//Vertex variables for fragment shader to utilize
+// Vertex variables for fragment shader to utilize
 varying vec2 texCoord;
 varying vec4 position;
 varying vec3 norm;
@@ -20,7 +20,7 @@ void main()
     norm = vNormal;
     position = vpos;
 
-    //Unchanged - Must have in vertex shaders
+    // Unchanged - Must have in vertex shaders
     gl_Position = Projection * ModelView * vpos;
 
 }
